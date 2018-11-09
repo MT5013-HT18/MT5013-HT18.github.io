@@ -179,7 +179,7 @@ music &lt;- map_df(days, get_SR_music, channel = 164)</code></pre>
 </ul>
 <pre class="r"><code>as.POSIXct(&quot;2018-01-01 23:57:04 CET&quot;) %&gt;% format(&quot;%H:%M&quot;)</code></pre>
 <pre><code>## [1] &quot;23:57&quot;</code></pre>
-<p>for extracting the hour and minute, see <code>?format.POSIXct</code> for more examples.</p>
+<p>for extracting the hour and minute, see <code>?format.POSIXct</code> for more examples. Note that the above code results in a value of character-type, you may want to further convert to numeric format (e.g. minutes or hours after midnight) before plotting.</p>
 <ul>
 <li>Visualise the number of hours spent playing music each day over a sequence of dates.</li>
 </ul>

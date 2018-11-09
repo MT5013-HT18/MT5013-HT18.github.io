@@ -53,7 +53,7 @@ music <- map_df(days, get_SR_music, channel = 164)
 ```{r}
 as.POSIXct("2018-01-01 23:57:04 CET") %>% format("%H:%M")
 ```
-for extracting the hour and minute, see `?format.POSIXct` for more examples.
+for extracting the hour and minute, see `?format.POSIXct` for more examples. Note that the above code results in a value of character-type, you may want to further convert to numeric format (e.g. minutes or hours after midnight) before plotting.
 
 * Visualise the number of hours spent playing music each day over a sequence of dates.
 
