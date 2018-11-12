@@ -370,7 +370,7 @@ glimpse(species_data)</code></pre>
 </ul>
 <pre class="r"><code>names(species_data) &lt;- gsub(&quot; &quot;, &quot;_&quot;, names(species_data))</code></pre>
 <ul>
-<li>The <code>Start</code> and <code>End</code> variables should be of <code>Date</code>-format, not <code>chr</code> (depending on your local settings they may actually be correctly interpreted), use <code>as.Date</code> within a <code>mutate</code> to fix this. Also turn <code>Identification</code> into a <code>logical</code> variable using <code>as.logical</code>.</li>
+<li>The <code>Start</code> and <code>End</code> variables should be of <code>Date</code>-format, not <code>chr</code> (depending on your local settings they may actually be correctly interpreted), use <code>as.Date</code> within a <code>mutate</code> to fix this. Also turn <code>Uncertain determination</code> into a <code>logical</code> variable using <code>as.logical</code>.</li>
 <li>Create a new variable <code>Date</code> that equals the value of <code>Start</code>, in the following this will represent the observation date.</li>
 </ul>
 </div>
