@@ -1,0 +1,54 @@
+---
+title: 'Day 7: Basic SQL'
+output:
+  html_document:
+    toc: true
+    toc_depth: 4    
+---
+
+## Do this before class
+
+Solve course *Intro to SQL for Data Science* and chapters *Importing data from databases Part 1 and 2* [DataCamp](https://www.datacamp.com/enterprise/mt5013-ht18/). Read the [RSQLite vignette](https://cran.r-project.org/web/packages/RSQLite/vignettes/RSQLite.html).
+
+## During class
+
+There are essentially three ways to send SQL-queries directly from RStudio to a database `mybase`, where we assume `mybase` is an SQLite database stored in file `mybase.sqlite`.
+
+- through `dbGetQuery` after establishing a conection using `dbConnect` as in
+
+```{r, eval = FALSE}
+con <- dbConnect(SQLite(), "mybase.sqlite")
+dbGetQuery(con, "SELECT * FROM table")
+```
+
+
+- by creating an SQL-chunk in a Markdown document as in
+
+````markdown
+`r ''````{r}
+con <- dbConnect(SQLite(), "mybase.sqlite")
+```
+
+`r ''````{sql, connection = con}
+SELECT * FROM table
+```
+````
+
+- by installing the [RStudio 1.2 preview version](https://blog.rstudio.com/2018/10/02/rstudio-1-2-preview-sql/) which allows SQL scripts.
+
+We recommend using the first option within an R script file.
+
+### SL SQL
+
+The SQLite database `Class_files/sthlm_metro.sqlite` contains data on the stops of the Stockholm metro at the platform level. 
+
+- Connect to the database, list the tables and figure out how they relate to eachother.
+
+- Query for the `LineName` from table `Line` where `LineNumber` is 18.
+- Query for the number of stops on `LineNumber` 18 `Direction` 1.
+- Query for the five most southern `StationName`, where position is measured as the average `Latitude` of its `PlatformNumber`.
+- Query for all `StationName` on `LineNumber` 18 `Direction` 1.
+
+
+* More excercises to follow *
+
