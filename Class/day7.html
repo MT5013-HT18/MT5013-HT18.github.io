@@ -313,7 +313,10 @@ $(document).ready(function () {
 <ul>
 <li><a href="#do-this-before-class">Do this before class</a></li>
 <li><a href="#during-class">During class</a><ul>
+<li><a href="#sql-joins">SQL joins</a></li>
 <li><a href="#sl-sql">SL SQL</a></li>
+<li><a href="#pokemon-sql">Pokemon SQL</a></li>
+<li><a href="#connecting-to-an-external-database">Connecting to an external database</a></li>
 </ul></li>
 </ul>
 </div>
@@ -344,16 +347,172 @@ SELECT * FROM table
 <li>by installing the <a href="https://blog.rstudio.com/2018/10/02/rstudio-1-2-preview-sql/">RStudio 1.2 preview version</a> which allows SQL scripts.</li>
 </ul>
 <p>We recommend using the first option within an R script file.</p>
+<div id="sql-joins" class="section level3">
+<h3>SQL joins</h3>
+<p>Practise SQL joins at <a href="https://www.w3schools.com/sql/sql_join.asp">w3schools</a>.</p>
+</div>
 <div id="sl-sql" class="section level3">
 <h3>SL SQL</h3>
 <p>The SQLite database <code>Class_files/sthlm_metro.sqlite</code> contains data on the stops of the Stockholm metro at the platform level.</p>
 <ul>
 <li><p>Connect to the database, list the tables and figure out how they relate to eachother.</p></li>
 <li>Query for the <code>LineName</code> from table <code>Line</code> where <code>LineNumber</code> is 18.</li>
-<li>Query for the number of stops on <code>LineNumber</code> 18 <code>Direction</code> 1.</li>
+<li>Query for the number of platforms at each station in descending order.</li>
 <li>Query for the five most southern <code>StationName</code>, where position is measured as the average <code>Latitude</code> of its <code>PlatformNumber</code>.</li>
-<li><p>Query for all <code>StationName</code> on <code>LineNumber</code> 18 <code>Direction</code> 1.</p></li>
-<li><p>More excercises to follow *</p></li>
+<li>Query for the number of stations on <code>LineNumber</code> 18.</li>
+<li><p>Query for all <code>StationName</code> on <code>LineNumber</code> 18 in alphabetical order.</p></li>
+</ul>
+</div>
+<div id="pokemon-sql" class="section level3">
+<h3>Pokemon SQL</h3>
+<p>The SQLite database <code>Class_files/pokemon.sqlite</code> contains the full set of tables from <a href="https://github.com/veekun/pokedex/tree/master/pokedex/data/csv">https://github.com/veekun/pokedex/tree/master/pokedex/data/csv</a>.</p>
+<p>Close any existing connections with <code>dbDisconnect</code> and connect to the database.</p>
+<ul>
+<li>Query for the average <code>height</code> and average <code>weight</code> of pokemon (<code>pokemon</code> table).</li>
+<li>Query for the number of pokemon of less than average <code>weight</code>.</li>
+<li>Query for the average weight of <code>ghost</code>-type pokemon.</li>
+<li>Query for a table with columns <code>pokemon_id</code>, <code>pokemon_name</code> and six additional columns giving the pokemons <code>base_stat</code>-value in each of categories <code>hp</code>, <code>attack</code>, <code>defense</code>, <code>special-attack</code>, <code>special-defense</code> and <code>speed</code> (see tables <code>stats</code> and <code>pokemon_stats</code>).</li>
+</ul>
+</div>
+<div id="connecting-to-an-external-database" class="section level3">
+<h3>Connecting to an external database</h3>
+<p><a href="http://www.ensembl.org/index.html">Ensembl</a> hosts a public genomic database with a MySQL server. You can connect to the database holding the human genome using (note the use of <code>MySQL</code> rather than <code>SQLite</code>)</p>
+<pre class="r"><code>library(RMySQL)</code></pre>
+<pre><code>## Loading required package: DBI</code></pre>
+<pre class="r"><code>con &lt;- dbConnect(MySQL(), host = &quot;ensembldb.ensembl.org&quot;,
+                user = &quot;anonymous&quot;, password = &quot;&quot;, 
+                port = 3306)</code></pre>
+<p>we are now connected to a whole set of databases</p>
+<pre class="r"><code>databases &lt;- dbGetQuery(con, &quot;SHOW DATABASES&quot;)
+head(databases)</code></pre>
+<pre><code>##                                         Database
+## 1                             information_schema
+## 2                                 PERCONA_SCHEMA
+## 3          acanthochromis_polyacanthus_core_94_1
+## 4 acanthochromis_polyacanthus_otherfeatures_94_1
+## 5        acanthochromis_polyacanthus_rnaseq_94_1
+## 6                       aedes_aegypti_core_48_1b</code></pre>
+<pre class="r"><code>nrow(databases)</code></pre>
+<pre><code>## [1] 8282</code></pre>
+<p>Yes, plenty of databases. The latest version of the human genome is in <code>homo_sapiens_core_94_38</code>, we choose this by</p>
+<pre class="r"><code>dbSendQuery(con, &quot;USE homo_sapiens_core_94_38&quot;)</code></pre>
+<pre><code>## &lt;MySQLResult:0,0,1&gt;</code></pre>
+<pre class="r"><code>dbListTables(con)</code></pre>
+<pre><code>##  [1] &quot;alt_allele&quot;                           
+##  [2] &quot;alt_allele_attrib&quot;                    
+##  [3] &quot;alt_allele_group&quot;                     
+##  [4] &quot;analysis&quot;                             
+##  [5] &quot;analysis_description&quot;                 
+##  [6] &quot;assembly&quot;                             
+##  [7] &quot;assembly_exception&quot;                   
+##  [8] &quot;associated_group&quot;                     
+##  [9] &quot;associated_xref&quot;                      
+## [10] &quot;attrib_type&quot;                          
+## [11] &quot;biotype&quot;                              
+## [12] &quot;coord_system&quot;                         
+## [13] &quot;data_file&quot;                            
+## [14] &quot;density_feature&quot;                      
+## [15] &quot;density_type&quot;                         
+## [16] &quot;dependent_xref&quot;                       
+## [17] &quot;ditag&quot;                                
+## [18] &quot;ditag_feature&quot;                        
+## [19] &quot;dna&quot;                                  
+## [20] &quot;dna_align_feature&quot;                    
+## [21] &quot;dna_align_feature_attrib&quot;             
+## [22] &quot;exon&quot;                                 
+## [23] &quot;exon_transcript&quot;                      
+## [24] &quot;external_db&quot;                          
+## [25] &quot;external_synonym&quot;                     
+## [26] &quot;gene&quot;                                 
+## [27] &quot;gene_archive&quot;                         
+## [28] &quot;gene_attrib&quot;                          
+## [29] &quot;genome_statistics&quot;                    
+## [30] &quot;identity_xref&quot;                        
+## [31] &quot;interpro&quot;                             
+## [32] &quot;intron_supporting_evidence&quot;           
+## [33] &quot;karyotype&quot;                            
+## [34] &quot;map&quot;                                  
+## [35] &quot;mapping_session&quot;                      
+## [36] &quot;mapping_set&quot;                          
+## [37] &quot;marker&quot;                               
+## [38] &quot;marker_feature&quot;                       
+## [39] &quot;marker_map_location&quot;                  
+## [40] &quot;marker_synonym&quot;                       
+## [41] &quot;meta&quot;                                 
+## [42] &quot;meta_coord&quot;                           
+## [43] &quot;misc_attrib&quot;                          
+## [44] &quot;misc_feature&quot;                         
+## [45] &quot;misc_feature_misc_set&quot;                
+## [46] &quot;misc_set&quot;                             
+## [47] &quot;object_xref&quot;                          
+## [48] &quot;ontology_xref&quot;                        
+## [49] &quot;operon&quot;                               
+## [50] &quot;operon_transcript&quot;                    
+## [51] &quot;operon_transcript_gene&quot;               
+## [52] &quot;peptide_archive&quot;                      
+## [53] &quot;prediction_exon&quot;                      
+## [54] &quot;prediction_transcript&quot;                
+## [55] &quot;protein_align_feature&quot;                
+## [56] &quot;protein_feature&quot;                      
+## [57] &quot;repeat_consensus&quot;                     
+## [58] &quot;repeat_feature&quot;                       
+## [59] &quot;seq_region&quot;                           
+## [60] &quot;seq_region_attrib&quot;                    
+## [61] &quot;seq_region_mapping&quot;                   
+## [62] &quot;seq_region_synonym&quot;                   
+## [63] &quot;simple_feature&quot;                       
+## [64] &quot;stable_id_event&quot;                      
+## [65] &quot;supporting_feature&quot;                   
+## [66] &quot;transcript&quot;                           
+## [67] &quot;transcript_attrib&quot;                    
+## [68] &quot;transcript_intron_supporting_evidence&quot;
+## [69] &quot;transcript_supporting_feature&quot;        
+## [70] &quot;translation&quot;                          
+## [71] &quot;translation_attrib&quot;                   
+## [72] &quot;unmapped_object&quot;                      
+## [73] &quot;unmapped_reason&quot;                      
+## [74] &quot;xref&quot;</code></pre>
+<p>Check the <a href="https://www.ensembl.org/info/docs/api/core/diagrams/Core.assembly_tables.svg">assembly table</a> if you wonder how the tables relate to eachother… We may take a closer look at a table by <code>DESCRIBE</code></p>
+<pre class="r"><code>dbGetQuery(con, &quot;DESCRIBE gene&quot;)</code></pre>
+<pre><code>##                      Field                 Type Null Key Default
+## 1                  gene_id     int(10) unsigned   NO PRI    &lt;NA&gt;
+## 2                  biotype          varchar(40)   NO        &lt;NA&gt;
+## 3              analysis_id smallint(5) unsigned   NO MUL    &lt;NA&gt;
+## 4            seq_region_id     int(10) unsigned   NO MUL    &lt;NA&gt;
+## 5         seq_region_start     int(10) unsigned   NO        &lt;NA&gt;
+## 6           seq_region_end     int(10) unsigned   NO        &lt;NA&gt;
+## 7        seq_region_strand           tinyint(2)   NO        &lt;NA&gt;
+## 8          display_xref_id     int(10) unsigned  YES MUL    &lt;NA&gt;
+## 9                   source          varchar(40)   NO        &lt;NA&gt;
+## 10             description                 text  YES        &lt;NA&gt;
+## 11              is_current           tinyint(1)   NO           1
+## 12 canonical_transcript_id     int(10) unsigned   NO MUL    &lt;NA&gt;
+## 13               stable_id         varchar(128)  YES MUL    &lt;NA&gt;
+## 14                 version smallint(5) unsigned  YES        &lt;NA&gt;
+## 15            created_date             datetime  YES        &lt;NA&gt;
+## 16           modified_date             datetime  YES        &lt;NA&gt;
+##             Extra
+## 1  auto_increment
+## 2                
+## 3                
+## 4                
+## 5                
+## 6                
+## 7                
+## 8                
+## 9                
+## 10               
+## 11               
+## 12               
+## 13               
+## 14               
+## 15               
+## 16</code></pre>
+<ul>
+<li>What is the primary key in the <code>gene</code>-table?</li>
+<li>Query for the total number of protein-coding genes in the human genome (see <code>biotype</code> in the <code>gene</code>-table).</li>
+<li>Query for the total length of nucleic acid sequences (sequences of letters G, A, C, T) transcribed in the <code>dna</code>-table.</li>
+<li>Query for the total length of nucleic acid sequences (sequences of letters G, A, C, T) transcribed in the <code>dna</code>-table for protein coding genes.</li>
 </ul>
 </div>
 </div>
