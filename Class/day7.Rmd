@@ -38,6 +38,10 @@ SELECT * FROM table
 
 We recommend using the first option within an R script file.
 
+### SQL joins
+
+Practise SQL joins at [w3schools](https://www.w3schools.com/sql/sql_join.asp).
+
 ### SL SQL
 
 The SQLite database `Class_files/sthlm_metro.sqlite` contains data on the stops of the Stockholm metro at the platform level. 
@@ -45,10 +49,54 @@ The SQLite database `Class_files/sthlm_metro.sqlite` contains data on the stops 
 - Connect to the database, list the tables and figure out how they relate to eachother.
 
 - Query for the `LineName` from table `Line` where `LineNumber` is 18.
-- Query for the number of stops on `LineNumber` 18 `Direction` 1.
+- Query for the number of platforms at each station in descending order.
 - Query for the five most southern `StationName`, where position is measured as the average `Latitude` of its `PlatformNumber`.
-- Query for all `StationName` on `LineNumber` 18 `Direction` 1.
+- Query for the number of stations on `LineNumber` 18.
+- Query for all `StationName` on `LineNumber` 18 in alphabetical order.
 
 
-* More excercises to follow *
+### Pokemon SQL
+
+The SQLite database `Class_files/pokedex.sqlite` contains the full set of tables from [https://github.com/veekun/pokedex/tree/master/pokedex/data/csv](https://github.com/veekun/pokedex/tree/master/pokedex/data/csv).
+
+Close any existing connections with `dbDisconnect` and connect to the database.
+
+- Query for the average `height` and average `weight` of pokemon (`pokemon` table).
+- Query for the number of pokemon of less than average `weight`.
+- Query for the average weight of `ghost`-type pokemon.
+- Query for a table with columns `pokemon_id`, `pokemon_name` and six additional columns giving the pokemons `base_stat`-value in each of categories `hp`, `attack`, `defense`, `special-attack`, `special-defense` and `speed` (see tables `stats` and `pokemon_stats`). You may use SQL to ask for the table in long format and convert it to the final wide format using `spread` in R.
+
+
+### Connecting to an external database
+
+[Ensembl](http://www.ensembl.org/index.html) hosts a public genomic database with a MySQL server. You can connect to the database holding the human genome using (note the use of `MySQL` rather than `SQLite`)
+
+```{r}
+library(RMySQL)
+con <- dbConnect(MySQL(), host = "ensembldb.ensembl.org",
+                user = "anonymous", password = "", 
+                port = 3306)
+```
+we are now connected to a whole set of databases
+```{r}
+databases <- dbGetQuery(con, "SHOW DATABASES")
+head(databases)
+nrow(databases)
+```
+Yes, plenty of databases. The latest version of the human genome is in `homo_sapiens_core_94_38`, we choose this by
+```{r}
+dbSendQuery(con, "USE homo_sapiens_core_94_38")
+dbListTables(con)
+```
+Check the [assembly table](https://www.ensembl.org/info/docs/api/core/diagrams/Core.assembly_tables.svg) if you wonder how the tables relate to eachother... We may take a closer look at a table by `DESCRIBE`
+```{r}
+dbGetQuery(con, "DESCRIBE gene")
+```
+
+
+- What is the primary key in the `gene`-table?
+- Query for the total number of protein-coding genes in the human genome (see `biotype` in the `gene`-table).
+- Query for the first 10 DNA-sequences in the `dna` table.
+
+
 

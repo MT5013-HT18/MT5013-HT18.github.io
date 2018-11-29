@@ -180,13 +180,13 @@ SELECT * FROM table
 </div>
 <div id="pokemon-sql" class="section level3">
 <h3>Pokemon SQL</h3>
-<p>The SQLite database <code>Class_files/pokemon.sqlite</code> contains the full set of tables from <a href="https://github.com/veekun/pokedex/tree/master/pokedex/data/csv" class="uri">https://github.com/veekun/pokedex/tree/master/pokedex/data/csv</a>.</p>
+<p>The SQLite database <code>Class_files/pokedex.sqlite</code> contains the full set of tables from <a href="https://github.com/veekun/pokedex/tree/master/pokedex/data/csv" class="uri">https://github.com/veekun/pokedex/tree/master/pokedex/data/csv</a>.</p>
 <p>Close any existing connections with <code>dbDisconnect</code> and connect to the database.</p>
 <ul>
 <li>Query for the average <code>height</code> and average <code>weight</code> of pokemon (<code>pokemon</code> table).</li>
 <li>Query for the number of pokemon of less than average <code>weight</code>.</li>
 <li>Query for the average weight of <code>ghost</code>-type pokemon.</li>
-<li>Query for a table with columns <code>pokemon_id</code>, <code>pokemon_name</code> and six additional columns giving the pokemons <code>base_stat</code>-value in each of categories <code>hp</code>, <code>attack</code>, <code>defense</code>, <code>special-attack</code>, <code>special-defense</code> and <code>speed</code> (see tables <code>stats</code> and <code>pokemon_stats</code>).</li>
+<li>Query for a table with columns <code>pokemon_id</code>, <code>pokemon_name</code> and six additional columns giving the pokemons <code>base_stat</code>-value in each of categories <code>hp</code>, <code>attack</code>, <code>defense</code>, <code>special-attack</code>, <code>special-defense</code> and <code>speed</code> (see tables <code>stats</code> and <code>pokemon_stats</code>). You may use SQL to ask for the table in long format and convert it to the final wide format using <code>spread</code> in R.</li>
 </ul>
 </div>
 <div id="connecting-to-an-external-database" class="section level3">
@@ -211,7 +211,7 @@ head(databases)</code></pre>
 <pre><code>## [1] 8282</code></pre>
 <p>Yes, plenty of databases. The latest version of the human genome is in <code>homo_sapiens_core_94_38</code>, we choose this by</p>
 <pre class="r"><code>dbSendQuery(con, &quot;USE homo_sapiens_core_94_38&quot;)</code></pre>
-<pre><code>## &lt;MySQLResult:237377360,0,1&gt;</code></pre>
+<pre><code>## &lt;MySQLResult:237442472,0,1&gt;</code></pre>
 <pre class="r"><code>dbListTables(con)</code></pre>
 <pre><code>##  [1] &quot;alt_allele&quot;                           
 ##  [2] &quot;alt_allele_attrib&quot;                    
