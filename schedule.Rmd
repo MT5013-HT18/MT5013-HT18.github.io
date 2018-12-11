@@ -32,7 +32,7 @@ topics <- c(
     "[Web-scraping: Basic rvest.](Class/day11.html)",
     "[R Programming: Programming with functions.](Class/day12.html)",
     "[R Programming: Functional programming with purrr.](Class/day13.html)",
-    "[Presenting: Principles of visualisation.](Class/dat14.html)",
+    "[Presenting: Principles of visualisation.](Class/day14.html)",
     "Exam.",
     "Project supervision",
     "Project presentation.")
