@@ -26,7 +26,7 @@ topics <- c(
     "[Cleaning data: Tidy data. Long to wide and back.](Class/day5.html)",
     "[Relational data: Combining tables with dplyr joins.](Class/day6.html) <br> **Guest lecture: Sebastian Tengborg from [King](https://king.com/sv)** (9.15- ca 9.45)",
         "[Relational data: SQL basics](Class/day7.html).",
-    "[Exploring high-dimensional data: Principal components and clustering](Class/day8.html) [[Slides]](slides/slide8.html) [[Rmd]](slides/slide8.Rmd)",
+    "[Exploring high-dimensional data: Principal components and clustering](Class/day8.html)",
     "[Text data: Regular expressions.](Class/day9.html)",
     "[Using APIs: httr, JSON and XML.](Class/day10.html)",
     "[Web-scraping: Basic rvest.](Class/day11.html)",
