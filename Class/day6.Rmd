@@ -1,0 +1,77 @@
+---
+title: 'Dag 6: Relational data and  `dplyr` joins'
+output:
+  html_document:
+    toc: true
+    toc_depth: 4    
+---
+
+## Do this before class
+
+Read [R4DS](http://r4ds.had.co.nz/) chapter 13.
+
+Solve chapters *Mutating joins* and *Filtering joins and set operations* at [DataCamp](https://www.datacamp.com/enterprise/mt5013-ht18/assignments).
+
+## To do during class
+
+
+### More dental care
+
+During last class you worked with records of adults visiting dental care
+```{r, eval = FALSE}
+dental_data <- read_csv2("Class_files/Statistikdatabasen_2018-01-23 14_46_26.csv", skip = 1, n_max = 580)
+```
+join this with `Class_files/BE0101A5.csv`, containing population numbers, and compute number of visits per capita.
+
+### Systembolaget
+
+Download a current version of Systembolaget's assortment using [`Class_files/Systembolaget.R`](https://github.com/MT5013-HT18/Class_files/blob/master/Systembolaget.R) and construct:
+
+- A data-frame of beverages that have been *added* since 2018-10-08 (i.e. beverages in the new file that are not present in [`Class_files/systembolaget2018-10-08.csv`](https://github.com/MT5013-HT18/Class_files/blob/master/systembolaget2018-10-08.csv)).
+- A data-frame of beverages that have been *removed* since 2018-10-08.
+
+Any particular types of beverages that has been added/removed?
+
+### Pokemon
+
+Pokemon comes in various types, e.g.\ fire-, water- and grass-type, which affects their strengths and weaknesses in battle. Some are of dual-type.
+
+A table of Pokemon can be loaded by
+```{r, message = FALSE, warning = FALSE}
+library(tidyverse)
+pokemon <- read_csv("https://raw.githubusercontent.com/veekun/pokedex/master/pokedex/data/csv/pokemon.csv")
+head(pokemon)
+```
+(Mac-users may need the `Curl`-package in order to read directly from an  `https`-address), a table of types by
+
+```{r, message = FALSE, warning = FALSE}
+types <- read_csv("https://raw.githubusercontent.com/veekun/pokedex/master/pokedex/data/csv/types.csv")
+head(types)
+```
+and finally a table linking pokemon to type by
+```{r, message = FALSE, warning = FALSE}
+pokemon_types <- read_csv("https://raw.githubusercontent.com/veekun/pokedex/master/pokedex/data/csv/pokemon_types.csv")
+head(pokemon_types)
+```
+
+We can e.g. see that Pokemon no 1 (bulbasaur) is of type 12 (grass) and type 4 (poison). Join the tables, aiming for a full table like `poke_table` below and investigate how height or weight depends on type.
+
+
+```{r, echo = FALSE}
+poke_table <- mutate(pokemon_types, slot = paste("slot", slot, sep = "")) %>% 
+    left_join(types, by = c("type_id" = "id")) %>% 
+    select(pokemon_id, slot, identifier) %>% 
+    spread(slot, identifier) %>% 
+    left_join(pokemon, by = c("pokemon_id" = "id")) %>% 
+    select(pokemon_id, identifier, slot1, slot2, height, weight)
+```
+
+```{r}
+head(poke_table)
+```
+
+![Bulbasaur (Image source: Pokémon Wiki - Fandom)](Ash_Bulbasaur.png)
+
+### More birdwatching
+
+Do birdwatchers stay home when it is raining? The file [`Class_files/smhi-opendata_5_98210_20181112_125314.csv`](https://github.com/MT5013-HT18/Class_files/blob/master/smhi-opendata_5_98210_20181112_125314.csv) contains daily precipitation from [SMHI](http://opendata-download-metobs.smhi.se/explore/). Join this with the `species_data` from HW2 in order to investigate whether the observers are less active during rainy days. Note that there are strong unrelated seasonal components in both data sets. For example, both rainfall and recording activity tends to be low in summer months.

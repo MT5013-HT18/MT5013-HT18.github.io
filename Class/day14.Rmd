@@ -1,0 +1,15 @@
+---
+title: 'Day 14: Principles of visulaisation'
+output:
+  html_document:
+    toc: true
+    toc_depth: 4    
+---
+
+## Do this before class
+
+Read [R4DS](http://r4ds.had.co.nz/) chapter 28. Claus Wilke's [Fundamentals of Data Visualization](https://serialmentor.com/dataviz/) is a highly recommended text on visualisation, with beautiful `ggplot2` graphics (code available [here](https://github.com/clauswilke/dataviz)).
+
+## During class
+
+There will be a lecture followed by the chance to discuss projects or general class/homework supervision.
